@@ -9,7 +9,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 @Data
@@ -32,12 +31,14 @@ public class Client implements UserDetails {
     private String password;
     private String weight;
     private String height;
+    @Enumerated(EnumType.STRING)
+    Role role;
 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
-        return List.of(new SimpleGrantedAuthority("ROLE_CLIENT"));
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override

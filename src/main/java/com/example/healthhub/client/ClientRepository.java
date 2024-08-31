@@ -3,7 +3,7 @@ package com.example.healthhub.client;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional
+import java.util.Optional;
 
 @Repository
 public interface ClientRepository extends CrudRepository<Client, Long> {
