@@ -4,8 +4,6 @@ import com.example.healthhub.client.Role;
 import com.example.healthhub.client.Client;
 import com.example.healthhub.client.ClientRepository;
 import com.example.healthhub.jwt.JwtService;
-
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,7 +22,7 @@ public class AuthService {
     public AuthResponse login(LoginRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
         UserDetails user = clientRepository.findByEmail(request.getEmail()).orElseThrow(() -> new RuntimeException("Client not found"));
-        String token=jwtService.getToken(user);
+        String token = jwtService.getToken(user);
         return AuthResponse.builder()
                 .token(token)
                 .build();
@@ -47,4 +45,3 @@ public class AuthService {
                 .build();
     }
 }
-

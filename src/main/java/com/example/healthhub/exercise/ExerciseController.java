@@ -1,47 +1,47 @@
 package com.example.healthhub.exercise;
 
-import com.example.healthhub.exercise.ExerciseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
+
+import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/exercise")
 public class ExerciseController {
-    @Autowired
 
+    @Autowired
     private ExerciseService exerciseService;
 
     @GetMapping("/getall")
-    public ArrayList<Exercise> getExercises() {
-        return this.exerciseService.getExercises();
+    public List<Exercise> getExercises() {
+        return exerciseService.getExercises();
     }
 
-    @GetMapping(path = "/{id}")
-    public Optional<Exercise> getExerciseById(@PathVariable("id") Long id) {
-        return this.exerciseService.getExerciseById(id);
+    @GetMapping("/{id}")
+    public Optional<Exercise> getExerciseById(@PathVariable Long id) {
+        return exerciseService.getExerciseById(id);
     }
 
     @PostMapping("/save")
     public Exercise saveExercise(@RequestBody Exercise exercise) {
-        return this.exerciseService.saveExercise(exercise);
+        return exerciseService.saveExercise(exercise);
     }
 
-    @DeleteMapping(path = "/{id}")
-    public String deleteExercise(@PathVariable("id") Long id) {
-        boolean ok = this.exerciseService.deleteExercise(id);
-
-        if(ok){
-            return "Exercise with Id" + id + "has been deleted";
-        } else {
-            return "Error, Exercise with Id" + id + "has not been deleted";
-        }
+    @DeleteMapping("/{id}")
+    public String deleteExercise(@PathVariable Long id) {
+        exerciseService.deleteExercise(id);
+        return "Exercise with Id " + id + " has been deleted";
     }
 
-    @PutMapping(path = "/{id}")
-    public Exercise updateExercise(@RequestBody Exercise request, @PathVariable("id") Long id) {
-        return this.exerciseService.updateExercise(request, id);
+    @PutMapping("/{id}")
+    public Exercise updateExercise(@RequestBody Exercise exercise, @PathVariable Long id) {
+        return exerciseService.updateExercise(exercise, id);
     }
-    
+
+    // Endpoint para buscar ejercicios en la API externa y guardarlos
+    @GetMapping("/search")
+    public List<Exercise> searchExercises(@RequestParam String query) {
+        return exerciseService.searchExercisesFromApi(query);
+    }
 }

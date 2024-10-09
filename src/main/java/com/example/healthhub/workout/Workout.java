@@ -1,12 +1,8 @@
 package com.example.healthhub.workout;
 
 import com.example.healthhub.exercise.Exercise;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import java.util.List;
 
 @Entity
@@ -15,7 +11,10 @@ public class Workout {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @NotBlank(message = "Workout name is required")
     private String name;
+
     private String description;
 
     @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -29,35 +28,32 @@ public class Workout {
         this.exercises = exercises;
     }
 
+    // Getters y setters
 
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
 
-
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
 
-
     public String getDescription() {
         return description;
     }
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
 
     public List<Exercise> getExercises() {
-        return exercises;
+    return exercises;
     }
-    public void setExercises(List<Exercise> exercises) {
-        this.exercises = exercises;
-    }
+
 }
+
+   

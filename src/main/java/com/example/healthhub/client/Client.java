@@ -1,4 +1,5 @@
 package com.example.healthhub.client;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,13 +16,11 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-
 @Entity
 @Table(name = "clients", uniqueConstraints = {
         @UniqueConstraint(columnNames = "email")
 })
 public class Client implements UserDetails {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -32,12 +31,10 @@ public class Client implements UserDetails {
     private String weight;
     private String height;
     @Enumerated(EnumType.STRING)
-    Role role;
-
+    private Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-
         return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
@@ -66,4 +63,8 @@ public class Client implements UserDetails {
         return email;
     }
 
+    @Override
+    public String getPassword() {
+        return password;
+    }
 }
