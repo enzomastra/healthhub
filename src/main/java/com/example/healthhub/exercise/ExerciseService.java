@@ -8,6 +8,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Arrays;
 import java.util.List;
@@ -66,22 +69,29 @@ public class ExerciseService {
     }
 
     public List<Exercise> searchExercisesFromApi(String query) {
-        String url = UriComponentsBuilder.fromHttpUrl(apiUrl)
-                .queryParam("muscle", query)
-                .toUriString();
+    String url = UriComponentsBuilder.fromHttpUrl(apiUrl)
+            .queryParam("muscle", query)
+            .toUriString();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("X-Api-Key", apiKey);
-        headers.set("accept", "application/json");
+    HttpHeaders headers = new HttpHeaders();
+    headers.set("X-Api-Key", apiKey);
+    headers.set("accept", "application/json");
 
-        HttpEntity<String> entity = new HttpEntity<>(headers);
+    // Obtener el token JWT del contexto de seguridad
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+        String jwtToken = ((UserDetails) authentication.getPrincipal()).getUsername(); // Ajusta esto según cómo almacenes el token
+        headers.set("Authorization", "Bearer " + jwtToken);
+    }
 
-        ResponseEntity<ExerciseApiResponse[]> response = restTemplate.exchange(
-                url, HttpMethod.GET, entity, ExerciseApiResponse[].class);
+    HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        return Arrays.stream(response.getBody())
-                .map(this::mapToExercise)
-                .collect(Collectors.toList());
+    ResponseEntity<ExerciseApiResponse[]> response = restTemplate.exchange(
+            url, HttpMethod.GET, entity, ExerciseApiResponse[].class);
+
+    return Arrays.stream(response.getBody())
+            .map(this::mapToExercise)
+            .collect(Collectors.toList());
     }
 
     private Exercise mapToExercise(ExerciseApiResponse apiResponse) {
