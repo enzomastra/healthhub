@@ -23,6 +23,12 @@ public class WorkoutController {
         return workoutService.getWorkoutById(id);
     }
 
+    // obtener todas las rutinas del usuario
+    @GetMapping("/all")
+    public Iterable<Workout> getAllWorkouts() {
+        return workoutService.getAllWorkouts();
+    }
+
     // Guardar una nueva rutina
     @PostMapping("/save")
     public Workout saveWorkout(@RequestBody Workout workout) {

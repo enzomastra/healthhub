@@ -20,4 +20,10 @@ public class WorkoutService {
     public Optional<Workout> getWorkoutById(Long id) {
         return workoutRepository.findById(id);
     }
+
+    // Obtener todas las rutinas
+    public Iterable<Workout> getAllWorkouts() {
+        return workoutRepository.findAll();
+    }
+
 }
