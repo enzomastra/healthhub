@@ -2,6 +2,7 @@ package com.example.healthhub.exercise;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,9 +24,9 @@ public class ExerciseController {
         return exerciseService.getExerciseById(id);
     }
 
-    @PostMapping("/save")
-    public Exercise saveExercise(@RequestBody Exercise exercise) {
-        return exerciseService.saveExercise(exercise);
+    @PostMapping("/add")
+    public void addExercise(@RequestBody Exercise exercise) {
+        exerciseService.addExerciseToWorkout(exercise.getName(), exercise.getWorkoutId());
     }
 
     @DeleteMapping("/{id}")
@@ -35,13 +36,19 @@ public class ExerciseController {
     }
 
     @PutMapping("/{id}")
-    public Exercise updateExercise(@RequestBody Exercise exercise, @PathVariable Long id) {
-        return exerciseService.updateExercise(exercise, id);
+    public String updateExercise(@RequestBody Exercise exercise, @PathVariable Long id) {
+        Exercise updatedExercise = exerciseService.updateExercise(exercise, id);
+        if (updatedExercise == null) {
+            return "Exercise not found"; // Mensaje simple si no se encuentra el ejercicio
+        }
+        return "Exercise updated successfully"; // Mensaje de éxito
     }
+
 
     // Endpoint para buscar ejercicios en la API externa y guardarlos
     @GetMapping("/search")
-    public List<Exercise> searchExercises(@RequestParam String query) {
-        return exerciseService.searchExercisesFromApi(query);
+    public ResponseEntity<List<ExerciseDTO>> searchExercises(@RequestParam String query) {
+        List<ExerciseDTO> exercises = exerciseService.searchExercisesFromApi(query);
+        return ResponseEntity.ok(exercises); // Devolver ExerciseDTO
     }
 }

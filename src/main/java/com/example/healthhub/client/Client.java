@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.example.healthhub.workout.Workout;
 
 import java.util.Collection;
 import java.util.List;
@@ -32,6 +34,10 @@ public class Client implements UserDetails {
     private String height;
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Workout> workouts;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
