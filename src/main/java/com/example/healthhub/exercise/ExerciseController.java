@@ -48,7 +48,12 @@ public class ExerciseController {
     // Endpoint para buscar ejercicios en la API externa y guardarlos
     @GetMapping("/search")
     public ResponseEntity<List<ExerciseDTO>> searchExercises(@RequestParam String query) {
-        List<ExerciseDTO> exercises = exerciseService.searchExercisesFromApi(query);
+        // Reemplazar los espacios (%20) por guiones bajos (_)
+        String modifiedQuery = query.replace(" ", "_");
+        
+        System.out.println("Searching exercises with modified query: " + modifiedQuery);
+        
+        List<ExerciseDTO> exercises = exerciseService.searchExercisesFromApi(modifiedQuery);
         return ResponseEntity.ok(exercises); // Devolver ExerciseDTO
     }
 }
