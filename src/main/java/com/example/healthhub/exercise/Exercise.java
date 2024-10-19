@@ -14,13 +14,13 @@ public class Exercise {
     @NotBlank(message = "Name is required")
     private String name;
 
-    @Column(name = "workout_id") // Este campo representará la relación con la rutina
-    private Long workoutId; // Almacena solo el ID de la rutina
+    @Column(name = "workout_id")
+    private Long workoutId;
 
     @ManyToOne
     @JoinColumn(name = "workout_id", insertable = false, updatable = false)
     @JsonBackReference
-    private Workout workout; // Relación opcional para acceder a Workout si es necesario
+    private Workout workout;
 
     public Exercise() {}
 
@@ -29,7 +29,6 @@ public class Exercise {
         this.workoutId = workoutId;
     }
 
-    // Getters y setters
 
     public Long getId() {
         return id;

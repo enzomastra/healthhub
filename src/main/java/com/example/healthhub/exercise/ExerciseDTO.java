@@ -11,7 +11,6 @@ public class ExerciseDTO {
         this.instructions = instructions;
     }
 
-    // Getters y Setters
     public String getName() {
         return name;
     }

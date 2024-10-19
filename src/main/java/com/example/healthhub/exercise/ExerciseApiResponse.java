@@ -5,7 +5,6 @@ public class ExerciseApiResponse {
     private String muscle;
     private String instructions;
 
-    // Getters y Setters
     public String getName() {
         return name;
     }

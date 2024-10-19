@@ -39,21 +39,16 @@ public class ExerciseController {
     public String updateExercise(@RequestBody Exercise exercise, @PathVariable Long id) {
         Exercise updatedExercise = exerciseService.updateExercise(exercise, id);
         if (updatedExercise == null) {
-            return "Exercise not found"; // Mensaje simple si no se encuentra el ejercicio
+            return "Exercise not found";
         }
-        return "Exercise updated successfully"; // Mensaje de éxito
+        return "Exercise updated successfully";
     }
 
 
-    // Endpoint para buscar ejercicios en la API externa y guardarlos
     @GetMapping("/search")
     public ResponseEntity<List<ExerciseDTO>> searchExercises(@RequestParam String query) {
-        // Reemplazar los espacios (%20) por guiones bajos (_)
         String modifiedQuery = query.replace(" ", "_");
-        
-        System.out.println("Searching exercises with modified query: " + modifiedQuery);
-        
         List<ExerciseDTO> exercises = exerciseService.searchExercisesFromApi(modifiedQuery);
-        return ResponseEntity.ok(exercises); // Devolver ExerciseDTO
+        return ResponseEntity.ok(exercises);
     }
 }

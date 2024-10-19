@@ -35,12 +35,10 @@ public class ExerciseService {
         return exerciseRepository.findById(id);
     }
 
-    // Guardar un ejercicio en la base de datos
     public Exercise saveExercise(Exercise exercise) {
         return exerciseRepository.save(exercise);
     }
 
-    // Obtener todos los ejercicios
     public List<Exercise> getExercises() {
         Iterable<Exercise> iterable = exerciseRepository.findAll();
         return StreamSupport.stream(iterable.spliterator(), false)
@@ -68,23 +66,19 @@ public class ExerciseService {
         }
     }
 
-    // Eliminar un ejercicio por ID
     public void deleteExercise(Long id) {
         exerciseRepository.deleteById(id);
     }
 
-    // Actualizar un ejercicio
     public Exercise updateExercise(Exercise exercise, Long id) {
         Optional<Exercise> existingExerciseOpt = exerciseRepository.findById(id);
         if (existingExerciseOpt.isPresent()) {
             Exercise existingExercise = existingExerciseOpt.get();
             existingExercise.setName(exercise.getName());
-            existingExercise.setWorkoutId(exercise.getWorkoutId()); // Usar workoutId si lo tienes en Exercise
+            existingExercise.setWorkoutId(exercise.getWorkoutId());
             return exerciseRepository.save(existingExercise);
         } else {
-            // Solo imprimir el mensaje si no se encuentra el ejercicio
-            System.out.println("Exercise not found");
-            return null; // Devolver null si no se encuentra
+            return null;
         }
     }
 
@@ -97,10 +91,9 @@ public class ExerciseService {
         headers.set("X-Api-Key", apiKey);
         headers.set("accept", "application/json");
 
-        // Obtener el token JWT del contexto de seguridad
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
-            String jwtToken = ((UserDetails) authentication.getPrincipal()).getUsername(); // Ajusta esto según cómo almacenes el token
+            String jwtToken = ((UserDetails) authentication.getPrincipal()).getUsername();
             headers.set("Authorization", "Bearer " + jwtToken);
         }
 
