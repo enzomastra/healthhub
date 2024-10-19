@@ -32,13 +32,12 @@ public class WorkoutController {
         return clientOptional.orElseThrow(() -> new RuntimeException("Client not found"));
     }
 
-    // Obtener una rutina por ID
+
     @GetMapping("/{id}")
     public Optional<Workout> getWorkoutById(@PathVariable("id") Long id) {
         return workoutService.getWorkoutById(id);
     }
 
-    // Obtener todas las rutinas del usuario autenticado
     @GetMapping("/all")
     public Iterable<Workout> getAllWorkouts() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -47,7 +46,6 @@ public class WorkoutController {
         return workoutService.getWorkoutsByClient(client);
     }
 
-    // Guardar una nueva rutina
     @PostMapping("/save")
     public Workout saveWorkout(@RequestBody Workout workout) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -57,7 +55,6 @@ public class WorkoutController {
         return workoutService.saveWorkout(workout);
     }
 
-    // Modificar una rutina
     @PutMapping("/{id}")
     public Workout updateWorkout(@PathVariable Long id, @RequestBody Workout workoutDetails) {
         Workout workout = workoutService.getWorkoutById(id).orElseThrow(() -> new RuntimeException("Workout not found"));
@@ -67,15 +64,11 @@ public class WorkoutController {
         return workoutService.saveWorkout(workout);
     }
 
-    // Añadir un ejercicio a una rutina
     @PostMapping("/{workoutId}/add/{exerciseName}")
     public Workout addExerciseToWorkout(@PathVariable Long workoutId, @PathVariable String exerciseName) {
         return workoutService.addExerciseToWorkout(workoutId, exerciseName);
     }
 
-
-
-    // Borrar una rutina
     @DeleteMapping("/{id}")
     public String deleteWorkout(@PathVariable Long id) {
         workoutService.deleteWorkout(id);

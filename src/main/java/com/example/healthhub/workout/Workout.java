@@ -41,7 +41,7 @@ public class Workout {
 
     public void addExercise(Exercise exercise) {
         if (exercises.contains(exercise)) {
-            throw new RuntimeException("El ejercicio ya está añadido a esta rutina.");
+            throw new RuntimeException("The exercise is already in the workout");
         }
         exercises.add(exercise);
         exercise.setWorkout(this);
@@ -51,8 +51,6 @@ public class Workout {
         exercises.remove(exercise);
         exercise.setWorkout(null);
     }
-
-    // Getters y setters
 
     public Long getId() {
         return id;

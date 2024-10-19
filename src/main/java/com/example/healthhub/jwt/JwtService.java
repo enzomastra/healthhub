@@ -30,44 +30,37 @@ public class JwtService {
                 .setClaims(extraClaims)
                 .setSubject(client.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)) // 24 horas
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
                 .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    // Valida si el token es correcto (firma y expiración)
     public boolean validateToken(String token) {
-        return !isTokenExpired(token);  // Revisa si el token no ha expirado
+        return !isTokenExpired(token);
     }
 
-    // Extrae el nombre de usuario (subject) del token
     public String getUsernameFromToken(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
-    // Valida si el token es válido para un usuario
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = getUsernameFromToken(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
-    // Extrae cualquier tipo de claim del token
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
-    // Revisa si el token ha expirado
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
-    // Obtiene la fecha de expiración del token
     private Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    // Extrae todos los claims del token
     private Claims extractAllClaims(String token) {
         return Jwts
                 .parserBuilder()
@@ -77,7 +70,6 @@ public class JwtService {
                 .getBody();
     }
 
-    // Decodifica y obtiene la llave secreta para firmar el token
     private Key getKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
