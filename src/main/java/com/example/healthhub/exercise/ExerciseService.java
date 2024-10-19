@@ -1,6 +1,7 @@
 package com.example.healthhub.exercise;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -21,14 +22,18 @@ import java.util.stream.StreamSupport;
 @Service
 public class ExerciseService {
     private final RestTemplate restTemplate;
-    private final String apiUrl = "https://api.api-ninjas.com/v1/exercises";
-    private final String apiKey = "y1+5gc17uz0x2dy4oSqjuA==zWeBLlSiqDlwnaoP";
+    private final ExerciseRepository exerciseRepository;
+    
+    @Value("${api.url}")
+    private String apiUrl;
+
+    @Value("${api.key}")
+    private String apiKey;
 
     @Autowired
-    private ExerciseRepository exerciseRepository;
-
-    public ExerciseService(RestTemplate restTemplate) {
+    public ExerciseService(RestTemplate restTemplate, ExerciseRepository exerciseRepository) {
         this.restTemplate = restTemplate;
+        this.exerciseRepository = exerciseRepository;
     }
 
     public Optional<Exercise> getExerciseById(Long id) {
