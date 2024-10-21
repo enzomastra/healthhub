@@ -60,7 +60,6 @@ public class WorkoutController {
         Workout workout = workoutService.getWorkoutById(id).orElseThrow(() -> new RuntimeException("Workout not found"));
         workout.setName(workoutDetails.getName());
         workout.setDescription(workoutDetails.getDescription());
-        workout.setExercises(workoutDetails.getExercises());
         return workoutService.saveWorkout(workout);
     }
 

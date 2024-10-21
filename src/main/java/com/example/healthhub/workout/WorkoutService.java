@@ -34,6 +34,17 @@ public class WorkoutService {
         return workoutRepository.findByClient(client);
     }
 
+    public Workout updateWorkout(Long id, Workout workout) {
+        Optional<Workout> workoutOptional = workoutRepository.findById(id);
+        if (workoutOptional.isPresent()) {
+            Workout workoutToUpdate = workoutOptional.get();
+            workoutToUpdate.setName(workout.getName());
+            workoutToUpdate.setClient(workout.getClient());
+            return workoutRepository.save(workoutToUpdate);
+        } else {
+            throw new RuntimeException("Workout not found");
+        }
+    }
 
     public Optional<Workout> getWorkoutByIdAndClient(Long id, Client client) {
         return workoutRepository.findByIdAndClient(id, client);
