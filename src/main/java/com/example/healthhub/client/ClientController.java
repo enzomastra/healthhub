@@ -24,11 +24,10 @@ public class ClientController {
         return this.clientService.getClientById(id);
     }
 
-    @PostMapping("/save")
-    public Client saveClient(@RequestBody Client client) {
-        return this.clientService.saveClient(client);
+    @GetMapping(path = "/email/{email}")
+    public Optional<Client> getClientByEmail(@PathVariable("email") String email) {
+        return this.clientService.getClientByEmail(email);
     }
-
 
     @DeleteMapping(path = "/{id}")
     public String deleteClient(@PathVariable("id") Long id) {

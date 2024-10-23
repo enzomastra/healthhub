@@ -29,10 +29,6 @@ public class ClientService {
         return clientRepository.findByEmail(email);
     }
 
-    public Client saveClient(Client client) {
-        return clientRepository.save(client);
-    }
-
     public Boolean deleteClient(Long id) {
         try {
             clientRepository.deleteById(id);
@@ -44,12 +40,21 @@ public class ClientService {
 
     public Client updateClient(Client request, Long id) {
         Optional<Client> client = clientRepository.findById(id);
+        
         if (client.isPresent()) {
             Client clientToSave = client.get();
-            clientToSave.setName(request.getName());
-            clientToSave.setEmail(request.getEmail());
-            clientToSave.setWeight(request.getWeight());
-            clientToSave.setHeight(request.getHeight());
+            if (request.getName() != null) {
+                clientToSave.setName(request.getName());
+            }
+            if (request.getEmail() != null) {
+                clientToSave.setEmail(request.getEmail());
+            }
+            if (request.getWeight() != null) {
+                clientToSave.setWeight(request.getWeight());
+            }
+            if (request.getHeight() != null) {
+                clientToSave.setHeight(request.getHeight());
+            }
             return clientRepository.save(clientToSave);
         } else {
             return null;
